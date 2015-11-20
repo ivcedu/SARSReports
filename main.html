@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>SARS Reports</title>
+        <!-- homer-1.8 Vendor css -->
+        <link rel="stylesheet" href="../homer-1.8/vendor/fontawesome/css/font-awesome.css"/>
+        <link rel="stylesheet" href="../homer-1.8/vendor/metisMenu/dist/metisMenu.css"/>
+        <link rel="stylesheet" href="../homer-1.8/vendor/animate.css/animate.css"/>
+        <link rel="stylesheet" href="../homer-1.8/vendor/bootstrap/dist/css/bootstrap.css"/>
+        <!-- homer-1.8 App css -->
+        <link rel="stylesheet" href="../homer-1.8/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"/>
+        <link rel="stylesheet" href="../homer-1.8/fonts/pe-icon-7-stroke/css/helper.css"/>
+        <link rel="stylesheet" href="../homer-1.8/styles/style.css"/>
+        <link rel="stylesheet" href="../homer-1.8/styles/static_custom.css">
+        <!-- include css -->
+        <link rel="stylesheet" href="../include/sweetalert/css/sweetalert.css"/>
+        <!-- application css -->
+    </head>
+    <body>
+        <!-- Simple splash screen-->
+        <div class="splash">
+            <div class="color-line"></div>
+            <div class="splash-title">
+                <img src="../homer-1.8/images/loading-bars.svg" width="64" height="64" /> 
+            </div> 
+        </div>
+        
+        <!-- Header -->
+        <div id="header">
+            <div class="color-line"></div>
+            <div id="logo" class="light-version">
+                <span id="login_user"></span>
+            </div>
+            <nav role="navigation">
+                <div class="header-link hide-menu"><i class="fa fa-bars"></i></div>
+            </nav>
+        </div>
+        
+        <!-- Navigation -->
+        <aside id="menu">
+            <ul class="nav" id="side-menu">
+                <li>
+                    <a href="rptDropIns.html"><span class="nav-label">Drop-Ins Report</span></a>
+                </li>
+                <li class="active">
+                    <a href="rptPositiveAttendance.html"><span class="nav-label">Positive Atten.</span></a>
+                </li>
+                <li>
+                    <a href="rptZeroMin.html"><span class="nav-label">Zero Min Report</span></a>
+                </li>
+                <li>
+                    <a href=# id="nav_logout"><span class="nav-label">Logout</span><span class="pull-right"><i class="fa fa-sign-out"></i></span></a>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Main Wrapper -->
+        <div id="wrapper">
+            <!--
+            <div class="normalheader transition animated fadeIn">
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <h3 class="font-light m-b-xs" id="panel_header">Administrator Setting</h3>
+                        <br/>
+                        <p><button type="button" data-toggle="modal" data-target="#mod_admin" class="btn btn-primary span2" id="btn_new_admin"><i class="fa fa-check"></i> New Admin</button></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content animate-panel">
+                <div id="admin_list"></div>
+            </div>
+            -->
+        </div>
+        
+        <!-- homer-1.8 Vendor javascript -->
+        <script src="../homer-1.8/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="../homer-1.8/vendor/jquery-ui/jquery-ui.min.js"></script>
+        <script src="../homer-1.8/vendor/slimScroll/jquery.slimscroll.min.js"></script>
+        <script src="../homer-1.8/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../homer-1.8/vendor/metisMenu/dist/metisMenu.min.js"></script>
+        <script src="../homer-1.8/vendor/iCheck/icheck.min.js"></script>
+        <script src="../homer-1.8/vendor/sparkline/index.js"></script>
+        <!-- include javascript -->
+        <script src="../include/sweetalert/js/sweetalert.min.js"></script>
+        <!-- application javascript -->
+        <script src="js/main.js"></script>
+        <script src="js/session_data.js"></script>
+        <script src="js/db_access.js"></script>
+    </body>
+</html>
