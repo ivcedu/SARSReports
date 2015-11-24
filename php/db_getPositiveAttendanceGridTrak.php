@@ -1,9 +1,9 @@
 <?php
     require("config.php");
     
-    $StartDate = $_POST['StartDate'];
-    $EndDate = $_POST['EndDate'];
-    $LocationID = $_POST['LocationID'];
+    $StartDate = filter_input(INPUT_POST, 'StartDate');
+    $EndDate = filter_input(INPUT_POST, 'EndDate');
+    $LocationID = filter_input(INPUT_POST, 'LocationID');
     
     $dbConn->setAttribute(constant('PDO::SQLSRV_ATTR_DIRECT_QUERY'), true);
     
@@ -32,8 +32,6 @@
     
     $qry_get_main = "SELECT StudentID, StudentName, SUM(TotalMins) / 60 AS Hrs, SUM(TotalMins) % 60 AS Mins, CAST((SUM(TotalMins) % 60) / 60.0 AS decimal(10, 2)) AS MinsNumber "
                         ."FROM #RESULT2 GROUP BY StudentID, StudentName ORDER BY StudentName ASC";
-    
-//    $qry_test = "SELECT * FROM #RESULT2";
     
     // create table
     $dbConn->query($qry_create_table_result);

@@ -1,9 +1,9 @@
 <?php
     require("config.php");
     
-    $StartDate = $_GET['StartDate'];
-    $EndDate = $_GET['EndDate'];
-    $LocationID = $_GET['LocationID'];
+    $StartDate = filter_input(INPUT_GET, 'StartDate');
+    $EndDate = filter_input(INPUT_GET, 'EndDate');
+    $LocationID = filter_input(INPUT_GET, 'LocationID');
     
     $dbConn->setAttribute(constant('PDO::SQLSRV_ATTR_DIRECT_QUERY'), true);
     
@@ -33,8 +33,6 @@
     $qry_get_main = "SELECT StudentID, StudentName, SUM(TotalMins) / 60 AS Hrs, SUM(TotalMins) % 60 AS Mins, CAST((SUM(TotalMins) % 60) / 60.0 AS decimal(10, 2)) AS MinsNumber "
                         ."FROM #RESULT2 GROUP BY StudentID, StudentName ORDER BY StudentName ASC";
     
-//    $qry_test = "SELECT * FROM #RESULT2";
-    
     // create table
     $dbConn->query($qry_create_table_result);
     $dbConn->query($qry_create_table_result2);
@@ -59,8 +57,7 @@
     // Write the spreadsheet column titles / labels
     fputcsv($out, array('StudentID','Student Name','Hrs','Mins', 'Mins in digit'));
     // Write all the user records to the spreadsheet
-    foreach($data as $row)
-    {
+    foreach($data as $row) {
         fputcsv($out, array($row['StudentID'], $row['StudentName'], $row['Hrs'], $row['Mins'], $row['MinsNumber']));
     }
     

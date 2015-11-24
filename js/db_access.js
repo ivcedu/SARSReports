@@ -15,12 +15,12 @@ function getLoginUserInfo(php_file, user, pass) {
 }
 
 // get DB //////////////////////////////////////////////////////////////////////
-function db_getAdminByEmail(AdminEmail) {
+function db_getPositiveAttendanceGridTrak(StartDate, EndDate, LocationID) {   
     var result = new Array();
     $.ajax({
         type:"POST",
-        url:"php/db_getAdminByEmail.php",
-        data:{AdminEmail:AdminEmail},
+        url:"php/db_getPositiveAttendanceGridTrak.php",
+        data:{StartDate:StartDate, EndDate:EndDate, LocationID:LocationID},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);
