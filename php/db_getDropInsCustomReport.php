@@ -1,9 +1,9 @@
 <?php
     require("config.php");
     
-    $StartDate = $_POST['StartDate'];
-    $EndDate = $_POST['EndDate'];
-    $SarsLocation = $_POST['SarsLocation'];
+    $StartDate = filter_input(INPUT_POST, 'StartDate');
+    $EndDate = filter_input(INPUT_POST, 'EndDate');
+    $SarsLocation = filter_input(INPUT_POST, 'SarsLocation');
     
     $str_location_id = "";
     if ($SarsLocation != "0") {

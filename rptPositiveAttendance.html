@@ -72,37 +72,52 @@
         
         <!-- Main Wrapper -->
         <div id="wrapper">
+            <div class="normalheader transition animated fadeIn">
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <h3 class="font-light m-b-xs text-center">IVC SARS Positive Attendance Report</h3>
+                            </div>
+                            <br>
+                            <div class="row form-horizontal">
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 font-extra-bold" style="padding-top: 17px;">Center:</div>
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2" style="padding-top: 10px;"><select class="selectpicker form-control" data-container="body" id="sel_location"></select></div>
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 font-extra-bold" style="padding-top: 17px;">Semester:</div>
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2" style="padding-top: 10px;"><select class="selectpicker form-control" data-container="body" id="sel_semester"></select></div>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 font-extra-bold" style="padding-top: 17px;">Start Date:</div>
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 Z-IndexFront" style="padding-top: 10px;">
+                                    <input class="form-control" type="text" placeholder="click here" readonly id="start_date">
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 font-extra-bold" style="padding-top: 17px;">End Date:</div>
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 Z-IndexFront" style="padding-top: 10px;">
+                                    <input class="form-control" type="text" placeholder="click here" readonly id="end_date">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row form-horizontal">
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
+                                    <button type="button" class="btn btn-primary col-xs-12 col-sm-12 col-md-12 col-lg-12" id="btn_run"><i class="fa fa-refresh"></i> Run</button>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
+                                    <button type="button" class="btn btn-info col-xs-12 col-sm-12 col-md-12 col-lg-12" id="btn_to_excel"><i class="fa fa-file-excel-o"></i> To Excel</button>
+                                </div>    
+                            </div>
+                            <!-- spinner -->
+                            <div class='spinner' id="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="content animate-panel">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="hpanel hblue">
-                            <div class="panel-heading">
-                                SARS Positive Attendance Reports
-                            </div>
+                        <div class="hpanel">
                             <div class="panel-body">
                                 <div class="container-fluid">
-                                    <div class="row form-horizontal">
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 font-extra-bold" style="padding-top: 17px;">Location:</div>
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2" style="padding-top: 10px;"><select class="selectpicker form-control" data-container="body" id="sel_location"></select></div>
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 font-extra-bold" style="padding-top: 17px;">Start Date:</div>
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 Z-IndexFront" style="padding-top: 10px;">
-                                            <input class="form-control" type="text" placeholder="click here" readonly id="start_date">
-                                        </div>
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 font-extra-bold" style="padding-top: 17px;">End Date:</div>
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 Z-IndexFront" style="padding-top: 10px;">
-                                            <input class="form-control" type="text" placeholder="click here" readonly id="end_date">
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row form-horizontal">
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
-                                            <button type="button" class="btn btn-primary col-xs-12 col-sm-12 col-md-12 col-lg-12" id="btn_run"><i class="fa fa-refresh"></i> Run</button>
-                                        </div>
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
-                                            <button type="button" class="btn btn-info col-xs-12 col-sm-12 col-md-12 col-lg-12" id="btn_to_excel"><i class="fa fa-file-excel-o"></i> To Excel</button>
-                                        </div>    
-                                    </div>
-                                    <br>
                                     <div class="row">
                                         <table id="tbl_post_atten_list" class="table table-striped table-bordered table-hover">
                                             <thead>
@@ -149,6 +164,7 @@
         <script src="../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
         <script src="../include/jquery-ui-1.11.4/js/jquery-ui.min.js"></script>
         <script src="../include/bootstrap-3-timepicker/js/bootstrap-timepicker.min.js"></script>
+        <script src="../include/utilities/js/spin.min.js"></script>
         <!-- application javascript -->
         <script src="js/rptPositiveAttendance.js"></script>
         <script src="js/session_data.js"></script>

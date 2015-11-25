@@ -15,12 +15,39 @@ function getLoginUserInfo(php_file, user, pass) {
 }
 
 // get DB //////////////////////////////////////////////////////////////////////
+function db_getTbl_Term_Master() {   
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getTbl_Term_Master.php",
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 function db_getPositiveAttendanceGridTrak(StartDate, EndDate, LocationID) {   
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getPositiveAttendanceGridTrak.php",
         data:{StartDate:StartDate, EndDate:EndDate, LocationID:LocationID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
+function db_getDropInCustomReport(StartDate, EndDate, SarsLocation) {   
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getDropInsCustomReport.php",
+        data:{StartDate:StartDate, EndDate:EndDate, SarsLocation:SarsLocation},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);

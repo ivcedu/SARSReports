@@ -1,9 +1,15 @@
+var m_table;
+var target;
+var spinner;
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
         $('.splash').css('display', 'none');
+        target = $('#spinner')[0];
+        spinner = new Spinner();
         getLoginInfo();
         getSARSLocation();
+        getSARSTerms();
     }
     else {
         window.open('Login.html', '_self');
@@ -134,8 +140,18 @@ $(document).ready(function() {
         return false;
     });
     
+    // semester change event ///////////////////////////////////////////////////
+    $('#sel_semester').change(function() {
+        var sem_value = $('#sel_semester').val();
+        var ar_value = sem_value.split("_");
+        $('#start_date').val(ar_value[0]);
+        $('#end_date').val(ar_value[1]);
+    });
+    
     // run button click ////////////////////////////////////////////////////////
     $('#btn_run').click(function() { 
+        startSpin();
+        
         var location_id = $('#sel_location').val();
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
@@ -145,8 +161,10 @@ $(document).ready(function() {
             return false;
         }
         else {
-            getPositiveAttendanceList(start_date, end_date, location_id);
-            
+            setTimeout(function() { 
+                getPositiveAttendanceList(start_date, end_date, location_id);
+                stopSpin();
+            }, 100);
         }
     });
     
@@ -167,7 +185,7 @@ $(document).ready(function() {
     });
     
     // jquery datatables initialize ////////////////////////////////////////////
-    $('#tbl_post_atten_list').dataTable({ paging: false, searching: false, bInfo: false});
+    m_table = $('#tbl_post_atten_list').DataTable({ paging: false, bInfo: false});
     
     // bootstrap selectpicker
     $('.selectpicker').selectpicker();
@@ -256,6 +274,15 @@ $.fn['animatePanel'] = function() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function startSpin() {
+    spinner.spin(target);
+}
+
+function stopSpin() {
+    spinner.stop();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 function getLoginInfo() {
     var login_name = sessionStorage.getItem('ss_sarsr_loginName');
     $('#login_user').html(login_name);
@@ -263,7 +290,7 @@ function getLoginInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 function getSARSLocation() {
-    $('#sel_location').html("");
+    $('#sel_location').empty();
     
     var html = "<option value='43'>A310</option>";
     html += "<option value='31'>CDC</option>";
@@ -277,14 +304,30 @@ function getSARSLocation() {
     $('#sel_location').selectpicker('refresh');
 }
 
+function getSARSTerms() {
+    var result = new Array(); 
+    result = db_getTbl_Term_Master();
+    
+    $('#sel_semester').empty();
+    var html = "";
+    for (var i = 0; i < result.length; i++) {
+        html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "'>" + result[i]['Description'] + "</option>";
+    }
+    
+    $('#start_date').val(convertDBDateToString(result[0]['Start_Date']));
+    $('#end_date').val(convertDBDateToString(result[0]['Stop_Date']));
+    
+    $('#sel_semester').append(html);
+    $('#sel_semester').selectpicker('refresh');
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function getPositiveAttendanceList(start_date, end_date, sars_location) {    
     var result = new Array(); 
     result = db_getPositiveAttendanceGridTrak(start_date, end_date, sars_location);
-    
-    var table = $('#tbl_post_atten_list').DataTable();
-    table.clear();
-    table.rows.add(result).draw();
+
+    m_table.clear();
+    m_table.rows.add(result).draw();
     
     $('.animate-panel').animatePanel();
 }

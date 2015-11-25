@@ -1,8 +1,15 @@
+var m_table;
+var target;
+var spinner;
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
         $('.splash').css('display', 'none');
+        target = $('#spinner')[0];
+        spinner = new Spinner();
         getLoginInfo();
+        getSARSLocation();
+        getSARSTerms();
     }
     else {
         window.open('Login.html', '_self');
@@ -133,42 +140,59 @@ $(document).ready(function() {
         return false;
     });
     
-//    $('#btn_new_admin').click(function() {
-//        admin_id = "";
-//        resetModAdminInfo();
-//        $('#mod_admin_header').html("New Admin Setting");
-//    });
+    // semester change event ///////////////////////////////////////////////////
+    $('#sel_semester').change(function() {
+        var sem_value = $('#sel_semester').val();
+        var ar_value = sem_value.split("_");
+        $('#start_date').val(ar_value[0]);
+        $('#end_date').val(ar_value[1]);
+    });
     
-    // modal reader save button click //////////////////////////////////////////
-//    $('#mod_btn_admin_save').click(function() { 
-//        var admin_name = $.trim(textReplaceApostrophe($('#mod_admin_mame').val()));
-//        var admin_email = $.trim(textReplaceApostrophe($('#mod_admin_email').val()));
-//        
-//        if (admin_id === "") {
-//            addAdminToDB(admin_name, admin_email);
-//        }
-//        else {
-//            updateAdminToDB(admin_name, admin_email);
-//        }
-//        
-//        swal({title: "Saved!", text: "Admin has been saved", type: "success"});
-//    });
+    // run button click ////////////////////////////////////////////////////////
+    $('#btn_run').click(function() { 
+        startSpin();
+        
+        var location_id = $('#sel_location').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+        
+        if (location_id === "" || start_date === "" || end_date === "") {
+            swal({title: "Warning", text: "Please select location, start date and end date", type: "warning"});
+            return false;
+        }
+        else {
+            setTimeout(function() { 
+                getDropInsCustomReport(start_date, end_date, location_id); 
+                stopSpin();
+            }, 100);
+        }
+    });
     
-    // rating user list edit button click //////////////////////////////////////
-//    $(document).on('click', 'button[id^="btn_admin_edit_"]', function() {
-//        admin_id = $(this).attr('id').replace("btn_admin_edit_", "");
-//        $('#mod_admin_header').html("Edit Admin Setting");
-//        
-//        resetModAdminInfo();
-//        getSelectedAdminInfo();
-//    });
+    // to excel button click ///////////////////////////////////////////////////
+    $('#btn_to_excel').click(function() { 
+        var location_id = $('#sel_location').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+        
+        if (location_id === "" || start_date === "" || end_date === "") {
+            swal({title: "Warning", text: "Please select location, start date and end date", type: "warning"});
+            return false;
+        }
+        else {
+            var url_html = "StartDate=" + start_date + "&EndDate=" + end_date + "&SarsLocation=" + location_id;
+            location.href = "php/db_saveDropInsCustomReportCSV.php?" + url_html;
+        }
+    });
     
-//    $(document).on('click', 'button[id^="btn_admin_delete_"]', function() {
-//        admin_id = $(this).attr('id').replace("btn_admin_delete_", "");
-//        if (db_deleteAdmin(admin_id)) {
-//            $('#admin_id_' + admin_id).remove();
-//        }
-//    });
+    // jquery datatables initialize ////////////////////////////////////////////
+    m_table = $('#tbl_drop_ins_list').DataTable({ paging: false, bInfo: false});
+    
+    // bootstrap selectpicker
+    $('.selectpicker').selectpicker();
+    
+    // bootstrap datepicker
+    $('#start_date').datepicker();
+    $('#end_date').datepicker();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
@@ -250,85 +274,54 @@ $.fn['animatePanel'] = function() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function startSpin() {
+    spinner.spin(target);
+}
+
+function stopSpin() {
+    spinner.stop();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 function getLoginInfo() {
     var login_name = sessionStorage.getItem('ss_sarsr_loginName');
     $('#login_user').html(login_name);
 }
 
-//function getSelectedAdminInfo() {
-//    var result = new Array();
-//    result = db_getSelectedAdmin(admin_id);
-//    
-//    if (result.length === 1) {
-//        $('#mod_admin_mame').val(result[0]['AdminName']);
-//        $('#mod_admin_email').val(result[0]['AdminEmail']);
-//    }
-//}
+////////////////////////////////////////////////////////////////////////////////
+function getSARSLocation() {
+    $('#sel_location').empty();
+    
+    var html = "<option value='2'>CO</option>";
+    
+    $('#sel_location').append(html);
+    $('#sel_location').selectpicker('refresh');
+}
+
+function getSARSTerms() {
+    var result = new Array(); 
+    result = db_getTbl_Term_Master();
+    
+    $('#sel_semester').empty();
+    var html = "";
+    for (var i = 0; i < result.length; i++) {
+        html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "'>" + result[i]['Description'] + "</option>";
+    }
+    
+    $('#start_date').val(convertDBDateToString(result[0]['Start_Date']));
+    $('#end_date').val(convertDBDateToString(result[0]['Stop_Date']));
+    
+    $('#sel_semester').append(html);
+    $('#sel_semester').selectpicker('refresh');
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//function setAdminHTML(id) {
-//    var html = "<div class='row' id='admin_id_" + id + "'>";
-//    html += "<div class='col-xs-12 col-sm-12 col-md-12'>";
-//    html += "<div class='hpanel hblue contact-panel'>";
-//    html += "<div class='panel-body'>";  
-//    
-//    html += "<div class='row'>";
-//    html += "<div class='col-xs-6 col-sm-4 col-md-3 col-lg-2'>Admin Name:</div>";
-//    html += "<div class='col-xs-6 col-sm-8 col-md-9 col-lg-10' id='admin_name_" + id + "'></div>";
-//    html += "</div>";
-//    
-//    html += "<br/>";
-//    
-//    html += "<div class='row'>";
-//    html += "<div class='col-xs-6 col-sm-4 col-md-3 col-lg-2'>Admin Email:</div>";
-//    html += "<div class='col-xs-6 col-sm-8 col-md-9 col-lg-10' id='admin_email_" + id + "'></div>";
-//    html += "</div>";
-//    
-//    html += "<br/>";
-//    
-//    html += "<p>";
-//    html += "<button type='button' class='btn btn-primary w-xs' data-toggle='modal' data-target='#mod_admin' id='btn_admin_edit_" + id + "'>Edit</button>";
-//    html += "<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
-//    html += "<button type='button' class='btn btn-danger2 w-xs' id='btn_admin_delete_" + id + "'>Delete</button>";
-//    html += "</p>";
-//    
-//    html += "</div>";
-//    html += "</div>";
-//    html += "</div>";
-//    html += "</div>";
-//    
-//    $('#admin_list').append(html);
-//}
-
-//function setAdminValues(id, admin_name, admin_email) {        
-//    $('#admin_name_' + id).html(admin_name);
-//    $('#admin_email_' + id).html(admin_email);
-//}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//function getAdminList() {
-//    var result = new Array();
-//    result = db_getAdminList();
-//    
-//    $('#admin_list').empty();
-//    for (var i = 0; i < result.length; i++) {
-//        setAdminHTML(result[i]['AdminID']);
-//        setAdminValues(result[i]['AdminID'], result[i]['AdminName'], result[i]['AdminEmail']);
-//    }
-//    
-//    $('.animate-panel').animatePanel();
-//}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//function addAdminToDB(admin_name, admin_email) {
-//    admin_id = db_insertAdmin(admin_name, admin_email);
-//    setAdminHTML(admin_id);
-//    setAdminValues(admin_id, admin_name, admin_email);
-//}
-
-//function updateAdminToDB(admin_name, admin_email) {
-//    if (db_updateAdmin(admin_id, admin_name, admin_email)) {
-//        setAdminValues(admin_id, admin_name, admin_email);
-//    }
-//}
+function getDropInsCustomReport(start_date, end_date, sars_location) {
+    var result = new Array(); 
+    result = db_getDropInCustomReport(start_date, end_date, sars_location);
+    
+    m_table.clear();
+    m_table.rows.add(result).draw();
+    
+    $('.animate-panel').animatePanel();
+}
