@@ -9,7 +9,6 @@ window.onload = function() {
         spinner = new Spinner();
         getLoginInfo();
         getSARSLocation();
-        getSARSTerms();
     }
     else {
         window.open('Login.html', '_self');
@@ -140,14 +139,6 @@ $(document).ready(function() {
         return false;
     });
     
-    // semester change event ///////////////////////////////////////////////////
-    $('#sel_semester').change(function() {
-        var sem_value = $('#sel_semester').val();
-        var ar_value = sem_value.split("_");
-        $('#start_date').val(ar_value[0]);
-        $('#end_date').val(ar_value[1]);
-    });
-    
     // run button click ////////////////////////////////////////////////////////
     $('#btn_run').click(function() { 
         startSpin();
@@ -185,7 +176,7 @@ $(document).ready(function() {
     });
     
     // jquery datatables initialize ////////////////////////////////////////////
-    m_table = $('#tbl_drop_ins_list').DataTable({ paging: false, bInfo: false});
+    m_table = $('#tbl_drop_ins_list').DataTable({ paging: false, searching: false, bInfo: false});
     
     // bootstrap selectpicker
     $('.selectpicker').selectpicker();
@@ -296,23 +287,6 @@ function getSARSLocation() {
     
     $('#sel_location').append(html);
     $('#sel_location').selectpicker('refresh');
-}
-
-function getSARSTerms() {
-    var result = new Array(); 
-    result = db_getTbl_Term_Master();
-    
-    $('#sel_semester').empty();
-    var html = "";
-    for (var i = 0; i < result.length; i++) {
-        html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "'>" + result[i]['Description'] + "</option>";
-    }
-    
-    $('#start_date').val(convertDBDateToString(result[0]['Start_Date']));
-    $('#end_date').val(convertDBDateToString(result[0]['Stop_Date']));
-    
-    $('#sel_semester').append(html);
-    $('#sel_semester').selectpicker('refresh');
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

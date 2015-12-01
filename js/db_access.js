@@ -56,6 +56,20 @@ function db_getDropInCustomReport(StartDate, EndDate, SarsLocation) {
     return result;
 }
 
+function db_getZeroMinGridTrak(StartDate, EndDate, LocationID, TermID) {   
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getZeroMinGridTrak.php",
+        data:{StartDate:StartDate, EndDate:EndDate, LocationID:LocationID, TermID:TermID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 //function db_getSurveyCourseCount(TermCode) {
 //    var result = "";
 //    $.ajax({
