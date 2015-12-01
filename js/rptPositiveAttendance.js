@@ -185,7 +185,7 @@ $(document).ready(function() {
     });
     
     // jquery datatables initialize ////////////////////////////////////////////
-    m_table = $('#tbl_post_atten_list').DataTable({ paging: false, bInfo: false, , order: [[ 1, "asc" ]]});
+    m_table = $('#tbl_post_atten_list').DataTable({ paging: false, bInfo: false, order: [[ 1, "asc" ]]});
     
     // bootstrap selectpicker
     $('.selectpicker').selectpicker();
