@@ -301,7 +301,7 @@ function getSARSLocation() {
     var html = "<option value='43'>A310</option>";
     html += "<option value='31'>CDC</option>";
     html += "<option value='47'>LANGUAGE</option>";
-    html += "<option value='37'>MATHLAB</option>";
+    html += "<option value='37'>MATHLAB B356</option>";
     html += "<option value='30'>READING</option>";
     html += "<option value='44'>SUCCESS CTR</option>";
     html += "<option value='49'>WRITING CENTER</option>";
