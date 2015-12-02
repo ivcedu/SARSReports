@@ -176,7 +176,7 @@ $(document).ready(function() {
     });
     
     // jquery datatables initialize ////////////////////////////////////////////
-    m_table = $('#tbl_drop_ins_list').DataTable({ paging: false, searching: false, bInfo: false});
+    m_table = $('#tbl_drop_ins_list').DataTable({ paging: false, searching: false, bInfo: false, aaSorting: []});
     
     // bootstrap selectpicker
     $('.selectpicker').selectpicker();
