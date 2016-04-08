@@ -1,6 +1,9 @@
 var m_table;
 var target;
 var spinner;
+
+var ctx;
+var avg_wait_chart;
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
@@ -14,6 +17,11 @@ window.onload = function() {
         window.open('Login.html', '_self');
     }
 };
+
+$(window).bind("load", function () {
+    // Remove splash screen after load
+    $('.splash').css('display', 'none');
+});
 
 $(window).bind("resize click", function () {
     // Add special class to minimalize page elements when screen is less than 768px
@@ -29,9 +37,9 @@ $(window).bind("resize click", function () {
 $(document).ready(function() {
     // Add special class to minimalize page elements when screen is less than 768px
     setBodySmall();
-    
+
     // Handle minimalize sidebar menu
-    $('.hide-menu').click(function(event){
+    $('.hide-menu').on('click', function(event){
         event.preventDefault();
         if ($(window).width() < 769) {
             $("body").toggleClass("show-sidebar");
@@ -39,21 +47,21 @@ $(document).ready(function() {
             $("body").toggleClass("hide-sidebar");
         }
     });
-    
+
     // Initialize metsiMenu plugin to sidebar menu
     $('#side-menu').metisMenu();
-    
+
     // Initialize iCheck plugin
     $('.i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',
         radioClass: 'iradio_square-green'
     });
-    
+
     // Initialize animate panel function
     $('.animate-panel').animatePanel();
-    
+
     // Function for collapse hpanel
-    $('.showhide').click(function (event) {
+    $('.showhide').on('click', function (event) {
         event.preventDefault();
         var hpanel = $(this).closest('div.hpanel');
         var icon = $(this).find('i:first');
@@ -70,16 +78,17 @@ $(document).ready(function() {
             hpanel.find('[id^=map-]').resize();
         }, 50);
     });
-    
+
     // Function for close hpanel
-    $('.closebox').click(function (event) {
+    $('.closebox').on('click', function (event) {
         event.preventDefault();
         var hpanel = $(this).closest('div.hpanel');
         hpanel.remove();
+        if($('body').hasClass('fullscreen-panel-mode')) { $('body').removeClass('fullscreen-panel-mode');}
     });
-    
+
     // Fullscreen for fullscreen hpanel
-    $('.fullscreen').click(function() {
+    $('.fullscreen').on('click', function() {
         var hpanel = $(this).closest('div.hpanel');
         var icon = $(this).find('i:first');
         $('body').toggleClass('fullscreen-panel-mode');
@@ -91,12 +100,12 @@ $(document).ready(function() {
     });
 
     // Open close right sidebar
-    $('.right-sidebar-toggle').click(function () {
+    $('.right-sidebar-toggle').on('click', function () {
         $('#right-sidebar').toggleClass('sidebar-open');
     });
 
     // Function for small header
-    $('.small-header-action').click(function(event){
+    $('.small-header-action').on('click', function(event){
         event.preventDefault();
         var icon = $(this).find('i:first');
         var breadcrumb  = $(this).parent().find('#hbreadcrumb');
@@ -109,7 +118,7 @@ $(document).ready(function() {
     setTimeout(function () {
         fixWrapperHeight();
     });
-    
+
     // Sparkline bar chart data and options used under Profile image on left navigation panel
     $("#sparkline1").sparkline([5, 6, 7, 2, 0, 4, 2, 4, 5, 7, 2, 4, 12, 11, 4], {
         type: 'bar',
@@ -118,7 +127,7 @@ $(document).ready(function() {
         barColor: '#62cb31',
         negBarColor: '#53ac2a'
     });
-    
+
     // Initialize tooltips
     $('.tooltip-demo').tooltip({
         selector: "[data-toggle=tooltip]"
@@ -128,7 +137,7 @@ $(document).ready(function() {
     $("[data-toggle=popover]").popover();
 
     // Move modal to body
-    // Fix Bootstrap backdrop issue with animation.css
+    // Fix Bootstrap backdrop issu with animation.css
     $('.modal').appendTo("body");
     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,6 +186,9 @@ $(document).ready(function() {
     
     // jquery datatables initialize ////////////////////////////////////////////
     m_table = $('#tbl_drop_ins_list').DataTable({ paging: false, searching: false, bInfo: false, aaSorting: []});
+    
+    // Chartjs object  initialize //////////////////////////////////////////////
+    ctx = $("#bar_zero_min_list").get(0).getContext("2d");
     
     // bootstrap selectpicker
     $('.selectpicker').selectpicker();
@@ -297,5 +309,90 @@ function getDropInsCustomReport(start_date, end_date, sars_location) {
     m_table.clear();
     m_table.rows.add(result).draw();
     
+    drawBarChart(result);
+    drawC3BarChart(result);
+    
     $('.animate-panel').animatePanel();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function drawBarChart(result) {
+    var chart_labels = [];
+    var data_wait_time = [];
+    
+    for (var i = 0; i < result.length; i++) {
+        chart_labels.push(result[i]['Month'] + ' ' + result[i]['Year']);
+        data_wait_time.push(result[i]['AvgWaitTime']);
+    }
+    
+    var barOptions = {
+        scaleBeginAtZero : true,
+        scaleShowGridLines : true,
+        scaleGridLineColor : "rgba(0,0,0,0.05)",
+        scaleGridLineWidth : 1,
+        barShowStroke : true,
+        barStrokeWidth : 2,
+        barValueSpacing : 25,
+        barDatasetSpacing : 1,
+        responsive:true
+    };
+    
+    var barData = {
+        labels: chart_labels,
+        datasets: [
+            {
+                label: "Avg. Wait Time",
+                fillColor: "rgba(98,203,49,0.5)",
+                strokeColor: "rgba(98,203,49,0.8)",
+                highlightFill: "rgba(98,203,49,0.75)",
+                highlightStroke: "rgba(98,203,49,1)",
+                data: data_wait_time
+            }
+        ]
+    };
+    
+    if (avg_wait_chart !== undefined) {
+        avg_wait_chart.destroy();
+    }
+
+    avg_wait_chart = new Chart(ctx).Bar(barData, barOptions);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function drawC3BarChart(result) {
+    var c3_labels = [];
+    var c3_drop_net_seen = [];
+    var c3_no_show = [];
+    
+    c3_labels.push('x');
+    c3_drop_net_seen.push('DropInsNotSeen');
+    c3_no_show.push(['NoShow']);
+    
+    for (var i = 0; i < result.length; i++) {
+        c3_labels.push(result[i]['Month'] + ' ' + result[i]['Year']);
+        c3_drop_net_seen.push(Number(result[i]['DropInsNotSeen']));
+        c3_no_show.push(Number(result[i]['Deleted']));
+    }
+    
+    c3.generate({
+            bindto: '#c3_zero_min_list',
+            data:{
+                x: 'x',
+                columns: [
+                    c3_labels,
+                    c3_drop_net_seen,
+                    c3_no_show
+                ],
+                colors:{
+                    DropInsNotSeen: '#BABABA',
+                    NoShow: '#ff0000'
+                },
+                type: 'bar'
+            },
+            axis: {
+                x: {
+                    type: 'category' // this needed to load string x value
+                }
+            }
+        });
 }

@@ -1,6 +1,8 @@
 var m_table;
 var target;
 var spinner;
+
+var m_tu301_list = new Array();
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
@@ -16,6 +18,11 @@ window.onload = function() {
     }
 };
 
+$(window).bind("load", function () {
+    // Remove splash screen after load
+    $('.splash').css('display', 'none');
+});
+
 $(window).bind("resize click", function () {
     // Add special class to minimalize page elements when screen is less than 768px
     setBodySmall();
@@ -30,9 +37,9 @@ $(window).bind("resize click", function () {
 $(document).ready(function() {
     // Add special class to minimalize page elements when screen is less than 768px
     setBodySmall();
-    
+
     // Handle minimalize sidebar menu
-    $('.hide-menu').click(function(event){
+    $('.hide-menu').on('click', function(event){
         event.preventDefault();
         if ($(window).width() < 769) {
             $("body").toggleClass("show-sidebar");
@@ -40,21 +47,21 @@ $(document).ready(function() {
             $("body").toggleClass("hide-sidebar");
         }
     });
-    
+
     // Initialize metsiMenu plugin to sidebar menu
     $('#side-menu').metisMenu();
-    
+
     // Initialize iCheck plugin
     $('.i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',
         radioClass: 'iradio_square-green'
     });
-    
+
     // Initialize animate panel function
     $('.animate-panel').animatePanel();
-    
+
     // Function for collapse hpanel
-    $('.showhide').click(function (event) {
+    $('.showhide').on('click', function (event) {
         event.preventDefault();
         var hpanel = $(this).closest('div.hpanel');
         var icon = $(this).find('i:first');
@@ -71,16 +78,17 @@ $(document).ready(function() {
             hpanel.find('[id^=map-]').resize();
         }, 50);
     });
-    
+
     // Function for close hpanel
-    $('.closebox').click(function (event) {
+    $('.closebox').on('click', function (event) {
         event.preventDefault();
         var hpanel = $(this).closest('div.hpanel');
         hpanel.remove();
+        if($('body').hasClass('fullscreen-panel-mode')) { $('body').removeClass('fullscreen-panel-mode');}
     });
-    
+
     // Fullscreen for fullscreen hpanel
-    $('.fullscreen').click(function() {
+    $('.fullscreen').on('click', function() {
         var hpanel = $(this).closest('div.hpanel');
         var icon = $(this).find('i:first');
         $('body').toggleClass('fullscreen-panel-mode');
@@ -92,12 +100,12 @@ $(document).ready(function() {
     });
 
     // Open close right sidebar
-    $('.right-sidebar-toggle').click(function () {
+    $('.right-sidebar-toggle').on('click', function () {
         $('#right-sidebar').toggleClass('sidebar-open');
     });
 
     // Function for small header
-    $('.small-header-action').click(function(event){
+    $('.small-header-action').on('click', function(event){
         event.preventDefault();
         var icon = $(this).find('i:first');
         var breadcrumb  = $(this).parent().find('#hbreadcrumb');
@@ -110,7 +118,7 @@ $(document).ready(function() {
     setTimeout(function () {
         fixWrapperHeight();
     });
-    
+
     // Sparkline bar chart data and options used under Profile image on left navigation panel
     $("#sparkline1").sparkline([5, 6, 7, 2, 0, 4, 2, 4, 5, 7, 2, 4, 12, 11, 4], {
         type: 'bar',
@@ -119,7 +127,7 @@ $(document).ready(function() {
         barColor: '#62cb31',
         negBarColor: '#53ac2a'
     });
-    
+
     // Initialize tooltips
     $('.tooltip-demo').tooltip({
         selector: "[data-toggle=tooltip]"
@@ -129,7 +137,7 @@ $(document).ready(function() {
     $("[data-toggle=popover]").popover();
 
     // Move modal to body
-    // Fix Bootstrap backdrop issue with animation.css
+    // Fix Bootstrap backdrop issu with animation.css
     $('.modal').appendTo("body");
     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,6 +195,16 @@ $(document).ready(function() {
         else {
             var url_html = "StartDate=" + start_date + "&EndDate=" + end_date + "&LocationID=" + location_id + "&TermID=" + term_id;
             location.href = "php/db_saveZeroMinGridTrakCSV.php?" + url_html;
+        }
+    });
+    
+    // to excel button click ///////////////////////////////////////////////////
+    $('#btn_pdf_drop').click(function() { 
+        for (var i = 0; i < m_tu301_list.length; i++) {
+            var stu_id = m_tu301_list[i]['IVC_ID'];
+            var stu_name = m_tu301_list[i]['Student_Name'];
+            var ticket = m_tu301_list[i]['Section_Name'];
+            var course = m_tu301_list[i]['Course_Title'];
         }
     });
     
@@ -336,4 +354,24 @@ function getZeroMinList(start_date, end_date, location_id, term_id) {
     m_table.rows.add(result).draw();
     
     $('.animate-panel').animatePanel();
+    setTU301List(result);
+}
+
+function setTU301List(result) {
+    m_tu301_list.length = 0;
+    m_tu301_list = result;
+    
+    m_tu301_list = $.grep(m_tu301_list, function(v) { return v['Course_Title'] === "TU 301"; });
+    m_tu301_list.sort(function(a, b) { 
+        var aValue = a["Section_Name"] + a["Student_Name"];
+        var bValue = b["Section_Name"] + b["Student_Name"];
+        
+        if (aValue > bValue) {
+            return 1;
+        } else if (aValue < bValue) {
+            return -1;
+        } else {
+            return 0;
+        } 
+    });
 }

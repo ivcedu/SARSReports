@@ -49,6 +49,8 @@ $(document).ready(function() {
             return false;
         }
     });
+    
+    $.backstretch(["images/14A_2863.jpg"], {duration: 3000, fade: 750});
 });
 
 ////////////////////////////////////////////////////////////////////////////////
