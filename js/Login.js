@@ -50,7 +50,7 @@ $(document).ready(function() {
         }
     });
     
-    $.backstretch(["images/14A_2863.jpg"], {duration: 3000, fade: 750});
+    $.backstretch(["images/sars_reports_back_web_2.jpg"], {duration: 3000, fade: 750});
 });
 
 ////////////////////////////////////////////////////////////////////////////////
