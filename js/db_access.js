@@ -28,12 +28,12 @@ function db_getTbl_Term_Master() {
     return result;
 }
 
-function db_getPositiveAttendanceGridTrak(StartDate, EndDate, LocationID) {   
+function db_getPositiveAttendanceGridTrak(StartDate, EndDate, LocationID, TermID) {   
     var result = new Array();
     $.ajax({
         type:"POST",
         url:"php/db_getPositiveAttendanceGridTrak.php",
-        data:{StartDate:StartDate, EndDate:EndDate, LocationID:LocationID},
+        data:{StartDate:StartDate, EndDate:EndDate, LocationID:LocationID, TermID:TermID},
         async: false,  
         success:function(data) {
             result = JSON.parse(data);

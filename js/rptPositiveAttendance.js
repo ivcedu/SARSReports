@@ -1,6 +1,8 @@
 var m_table;
 var target;
 var spinner;
+
+var term_id = "";
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
@@ -152,6 +154,7 @@ $(document).ready(function() {
         var ar_value = sem_value.split("_");
         $('#start_date').val(ar_value[0]);
         $('#end_date').val(ar_value[1]);
+        term_id = ar_value[2];
     });
     
     // run button click ////////////////////////////////////////////////////////
@@ -168,7 +171,7 @@ $(document).ready(function() {
         }
         else {
             setTimeout(function() { 
-                getPositiveAttendanceList(start_date, end_date, location_id);
+                getPositiveAttendanceList(start_date, end_date, location_id, term_id);
                 stopSpin();
             }, 100);
         }
@@ -185,8 +188,24 @@ $(document).ready(function() {
             return false;
         }
         else {
-            var url_html = "StartDate=" + start_date + "&EndDate=" + end_date + "&LocationID=" + location_id;
+            var url_html = "StartDate=" + start_date + "&EndDate=" + end_date + "&LocationID=" + location_id + "&TermID=" + term_id;
             location.href = "php/db_savePositiveAttendanceGridTrakCSV.php?" + url_html;
+        }
+    });
+    
+    // to excel button click ///////////////////////////////////////////////////
+    $('#btn_csv_ticket').click(function() { 
+        var location_id = $('#sel_location').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+        
+        if (location_id === "" || start_date === "" || end_date === "") {
+            swal({title: "Warning", text: "Please select location, start date and end date", type: "warning"});
+            return false;
+        }
+        else {
+            var url_html = "StartDate=" + start_date + "&EndDate=" + end_date + "&LocationID=" + location_id + "&TermID=" + term_id;
+            location.href = "php/db_savePosAttendGridTrakTicketCSV.php?" + url_html;
         }
     });
     
@@ -317,20 +336,21 @@ function getSARSTerms() {
     $('#sel_semester').empty();
     var html = "";
     for (var i = 0; i < result.length; i++) {
-        html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "'>" + result[i]['Description'] + "</option>";
+        html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "_" + result[i]['Term_ID'] + "'>" + result[i]['Description'] + "</option>";
     }
     
     $('#start_date').val(convertDBDateToString(result[0]['Start_Date']));
     $('#end_date').val(convertDBDateToString(result[0]['Stop_Date']));
+    term_id = result[0]['Term_ID'];
     
     $('#sel_semester').append(html);
     $('#sel_semester').selectpicker('refresh');
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function getPositiveAttendanceList(start_date, end_date, sars_location) {    
+function getPositiveAttendanceList(start_date, end_date, sars_location, term_id) {    
     var result = new Array(); 
-    result = db_getPositiveAttendanceGridTrak(start_date, end_date, sars_location);
+    result = db_getPositiveAttendanceGridTrak(start_date, end_date, sars_location, term_id);
 
     m_table.clear();
     m_table.rows.add(result).draw();

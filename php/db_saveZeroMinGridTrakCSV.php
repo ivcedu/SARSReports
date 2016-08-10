@@ -34,7 +34,8 @@
                     . "INNER JOIN [SARS].[dbo].[Tbl_Student_Courses] AS stcr ON btsx.Section_ID = stcr.Section_ID "
                     . "INNER JOIN [SARS].[dbo].[Tbl_Student_Master] AS stms ON stcr.Student_ID = stms.Student_ID "
                     . "INNER JOIN [SARS].[dbo].[Tbl_Student_ID_XRef] AS stxr ON stms.Student_ID = stxr.Student_ID "
-                    . "WHERE stcr.Dropped = 0 AND scms.Term_ID = '".$TermID."'";   
+                    . "WHERE stcr.Dropped = 0 AND crms.[Subject] + ' ' + crms.Course = 'TU 301' "
+                    . "AND scms.Term_ID = '".$TermID."'";   
     
     $qry_insert_3 = "INSERT INTO #RESULT "
                         . "SELECT sxf.Alt_ID, stu.Full_Name, '0', gdc.Duration, 'GRID', 0 "
@@ -63,7 +64,7 @@
     $qry_get_main = "SELECT stcr.IVC_ID, stcr.Student_Name, stcr.Course_Title, stcr.Section_Name "
                     . "FROM #STUCOURSES AS stcr LEFT JOIN #SARSZERO3 AS zero ON stcr.IVC_ID = zero.StudentID "
                     . "WHERE zero.StudentID IS NULL "
-                    . "ORDER BY stcr.Student_Name ASC";
+                    . "ORDER BY stcr.Student_Name, stcr.Section_Name ASC";
     
     // create table
     $dbConn->query($qry_create_table_1);
