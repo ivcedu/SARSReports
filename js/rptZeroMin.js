@@ -199,14 +199,14 @@ $(document).ready(function() {
     });
     
     // to excel button click ///////////////////////////////////////////////////
-    $('#btn_pdf_drop').click(function() { 
-        for (var i = 0; i < m_tu301_list.length; i++) {
-            var stu_id = m_tu301_list[i]['IVC_ID'];
-            var stu_name = m_tu301_list[i]['Student_Name'];
-            var ticket = m_tu301_list[i]['Section_Name'];
-            var course = m_tu301_list[i]['Course_Title'];
-        }
-    });
+//    $('#btn_pdf_drop').click(function() { 
+//        for (var i = 0; i < m_tu301_list.length; i++) {
+//            var stu_id = m_tu301_list[i]['IVC_ID'];
+//            var stu_name = m_tu301_list[i]['Student_Name'];
+//            var ticket = m_tu301_list[i]['Section_Name'];
+//            var course = m_tu301_list[i]['Course_Title'];
+//        }
+//    });
     
     // jquery datatables initialize ////////////////////////////////////////////
     m_table = $('#tbl_zero_min_list').DataTable({ paging: false, bInfo: false, order: [[ 1, "asc" ]]});
