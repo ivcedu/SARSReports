@@ -152,18 +152,18 @@ $(document).ready(function() {
     $('#sel_semester').change(function() {
         var sem_value = $('#sel_semester').val();
         var ar_value = sem_value.split("_");
-        $('#start_date').val(ar_value[0]);
-        $('#end_date').val(ar_value[1]);
+        $('#start_date').html(ar_value[0]);
+        $('#end_date').html(ar_value[1]);
         term_id = ar_value[2];
     });
     
     // run button click ////////////////////////////////////////////////////////
     $('#btn_run').click(function() { 
-        startSpin();
+        startSpin();    
         
         var location_id = $('#sel_location').val();
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
+        var start_date = $('#start_date').html();
+        var end_date = $('#end_date').html();
         
         if (location_id === "" || start_date === "" || end_date === "") {
             swal({title: "Warning", text: "Please select location, start date and end date", type: "warning"});
@@ -180,8 +180,8 @@ $(document).ready(function() {
     // to excel button click ///////////////////////////////////////////////////
     $('#btn_to_excel').click(function() { 
         var location_id = $('#sel_location').val();
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
+        var start_date = $('#start_date').html();
+        var end_date = $('#end_date').html();
         
         if (location_id === "" || start_date === "" || end_date === "") {
             swal({title: "Warning", text: "Please select location, start date and end date", type: "warning"});
@@ -196,8 +196,8 @@ $(document).ready(function() {
     // to excel button click ///////////////////////////////////////////////////
     $('#btn_csv_ticket').click(function() { 
         var location_id = $('#sel_location').val();
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
+        var start_date = $('#start_date').html();
+        var end_date = $('#end_date').html();
         
         if (location_id === "" || start_date === "" || end_date === "") {
             swal({title: "Warning", text: "Please select location, start date and end date", type: "warning"});
@@ -216,8 +216,8 @@ $(document).ready(function() {
     $('.selectpicker').selectpicker();
     
     // bootstrap datepicker
-    $('#start_date').datepicker();
-    $('#end_date').datepicker();
+//    $('#start_date').datepicker();
+//    $('#end_date').datepicker();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
@@ -339,8 +339,8 @@ function getSARSTerms() {
         html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "_" + result[i]['Term_ID'] + "'>" + result[i]['Description'] + "</option>";
     }
     
-    $('#start_date').val(convertDBDateToString(result[0]['Start_Date']));
-    $('#end_date').val(convertDBDateToString(result[0]['Stop_Date']));
+    $('#start_date').html(convertDBDateToString(result[0]['Start_Date']));
+    $('#end_date').html(convertDBDateToString(result[0]['Stop_Date']));
     term_id = result[0]['Term_ID'];
     
     $('#sel_semester').append(html);

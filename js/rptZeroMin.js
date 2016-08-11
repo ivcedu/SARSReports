@@ -152,8 +152,8 @@ $(document).ready(function() {
     $('#sel_semester').change(function() {
         var sem_value = $('#sel_semester').val();
         var ar_value = sem_value.split("_");
-        $('#start_date').val(ar_value[0]);
-        $('#end_date').val(ar_value[1]);
+        $('#start_date').html(ar_value[0]);
+        $('#end_date').html(ar_value[1]);
     });
     
     // run button click ////////////////////////////////////////////////////////
@@ -161,8 +161,8 @@ $(document).ready(function() {
         startSpin();
         
         var location_id = $('#sel_location').val();
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
+        var start_date = $('#start_date').html();
+        var end_date = $('#end_date').html();
         var sem_value = $('#sel_semester').val();
         var ar_value = sem_value.split("_");
         var term_id = ar_value[2];
@@ -182,8 +182,8 @@ $(document).ready(function() {
     // to excel button click ///////////////////////////////////////////////////
     $('#btn_to_excel').click(function() { 
         var location_id = $('#sel_location').val();
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
+        var start_date = $('#start_date').html();
+        var end_date = $('#end_date').html();
         var sem_value = $('#sel_semester').val();
         var ar_value = sem_value.split("_");
         var term_id = ar_value[2];
@@ -215,8 +215,8 @@ $(document).ready(function() {
     $('.selectpicker').selectpicker();
     
     // bootstrap datepicker
-    $('#start_date').datepicker();
-    $('#end_date').datepicker();
+//    $('#start_date').datepicker();
+//    $('#end_date').datepicker();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
@@ -338,8 +338,8 @@ function getSARSTerms() {
         html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "_" + result[i]['Term_ID'] + "'>" + result[i]['Description'] + "</option>";
     }
     
-    $('#start_date').val(convertDBDateToString(result[0]['Start_Date']));
-    $('#end_date').val(convertDBDateToString(result[0]['Stop_Date']));
+    $('#start_date').html(convertDBDateToString(result[0]['Start_Date']));
+    $('#end_date').html(convertDBDateToString(result[0]['Stop_Date']));
     
     $('#sel_semester').append(html);
     $('#sel_semester').selectpicker('refresh');
