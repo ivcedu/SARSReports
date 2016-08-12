@@ -62,6 +62,7 @@
     
     $qry_get_main = "SELECT rst.StudentID, rst.StudentName, rst.Hrs, rst.Mins, rst.MinsNumber "
                         . "FROM #RESULT3 AS rst INNER JOIN #TU301 AS tus ON rst.StudentID = tus.StudentID "
+                        . "WHERE rst.TotalMins > 0 "
                         . "ORDER BY rst.StudentName ASC";
     
     // create table
