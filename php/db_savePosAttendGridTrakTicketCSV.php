@@ -83,7 +83,7 @@
                         . "CEILING((CAST(rst.TotalMins AS decimal(10, 2)) / tus.TU301_COUNT) % 60) AS Mins, "
                         . "CAST((CEILING((CAST(rst.TotalMins AS decimal(10, 2)) / tus.TU301_COUNT) % 60) % 60) / 60.0 AS decimal(10, 2)) AS MinsNumber "
                         . "FROM #TU301STU AS tus LEFT JOIN #RESULT3 AS rst ON tus.StudentID = rst.StudentID "
-                        . "WHERE rst.TotalMins IS NOT NULL "
+                        . "WHERE rst.TotalMins > 0 "
                         . "ORDER BY tus.StudentName, tus.Section_Name ASC";
     
     // create table
