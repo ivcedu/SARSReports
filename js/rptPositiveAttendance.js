@@ -304,8 +304,7 @@ function getLoginInfo() {
 function getSARSLocation() {
     $('#sel_location').empty();
     
-    var html = "<option value='37'>MATHLAB B356</option>";
-    html += "<option value='44'>SUCCESS CTR</option>";
+    var html = "<option value='44'>SUCCESS CTR</option>";
     
     $('#sel_location').append(html);
     $('#sel_location').selectpicker('refresh');
