@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="../include/bootstrap-3-timepicker/css/bootstrap-timepicker.min.css"/>
         <!-- application css -->
         <link rel="stylesheet" href="css/popup-z-Index.css">
+        <link rel="stylesheet" href="css/fading-circle.css"/>
     </head>
     <body>
         <!-- Simple splash screen-->
@@ -104,8 +105,20 @@
                                     <button type="button" class="btn btn-success col-xs-12 col-sm-12 col-md-12 col-lg-12" id="btn_csv_ticket"><i class="fa fa-file-excel-o"></i> Ticket CSV</button>
                                 </div> 
                             </div>
-                            <!-- spinner -->
-                            <div class='spinner' id="spinner"></div>
+                            <div hidden class="sk-fading-circle" id="spinner_attachment">
+                                <div class="sk-circle1 sk-circle"></div>
+                                <div class="sk-circle2 sk-circle"></div>
+                                <div class="sk-circle3 sk-circle"></div>
+                                <div class="sk-circle4 sk-circle"></div>
+                                <div class="sk-circle5 sk-circle"></div>
+                                <div class="sk-circle6 sk-circle"></div>
+                                <div class="sk-circle7 sk-circle"></div>
+                                <div class="sk-circle8 sk-circle"></div>
+                                <div class="sk-circle9 sk-circle"></div>
+                                <div class="sk-circle10 sk-circle"></div>
+                                <div class="sk-circle11 sk-circle"></div>
+                                <div class="sk-circle12 sk-circle"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,7 +177,6 @@
         <script src="../include/bootstrap-select/js/bootstrap-select.1.5.4.min.js"></script>
         <script src="../include/jquery-ui-1.11.4/js/jquery-ui.min.js"></script>
         <script src="../include/bootstrap-3-timepicker/js/bootstrap-timepicker.min.js"></script>
-        <script src="../include/utilities/js/spin.min.js"></script>
         <!-- application javascript -->
         <script src="js/rptPositiveAttendance.js"></script>
         <script src="js/session_data.js"></script>
