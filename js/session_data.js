@@ -146,3 +146,38 @@ function getDTUIStamp() {
     
     return result;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+function getTardisTermCode(term_id) {
+    var result = new Array();
+    result = db_getTbl_Term_MasterByID(term_id);
+    
+    if (result.length === 1) {
+        var ar = $.trim(result[0]['Description']).split(" ");
+        var code = getSemesterCode(ar[0]);
+        var yr = ar[1];
+        
+        if (code === "" || yr === "") {
+            return "";
+        }
+        else {
+            return yr + code;
+        }
+    }
+    else {
+        return "";
+    }
+}
+
+function getSemesterCode(season) {
+    switch (season) {
+        case "Spring":
+            return "1";
+        case "Summer":
+            return "2";
+        case "Fall":
+            return "3";
+        default:  
+            return "";
+    }
+}

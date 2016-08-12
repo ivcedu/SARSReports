@@ -11,7 +11,7 @@
     $qry_create_table_tu301 = "CREATE TABLE #TU301 (StudentID nvarchar(255))";
     $qry_create_table_result = "CREATE TABLE #RESULT (StudentID nvarchar(255), StudentName nvarchar(255), Hrs int, Mins int, Sars nvarchar(255))";
     $qry_create_table_result2 = "CREATE TABLE #RESULT2 (StudentID nvarchar(255), StudentName nvarchar(255), Hrs int, Mins int, TotalMins int, Sars nvarchar(255))";
-    $qry_create_table_result3 = "CREATE TABLE #RESULT3 (StudentID nvarchar(255), StudentName nvarchar(255), Hrs int, Mins int, MinsNumber decimal(10, 2))";
+    $qry_create_table_result3 = "CREATE TABLE #RESULT3 (StudentID nvarchar(255), StudentName nvarchar(255), Hrs int, Mins int, TotalMins int, MinsNumber decimal(10, 2))";
     
     $qry_drop_table_tu301 = "DROP TABLE #TU301";
     $qry_drop_table_result = "DROP TABLE #RESULT";
@@ -57,7 +57,7 @@
                         . "FROM #RESULT GROUP BY StudentID, StudentName, Sars";
     
     $qry_insert_4 = "INSERT INTO #RESULT3 "
-                        . "SELECT StudentID, StudentName, SUM(TotalMins) / 60 AS Hrs, SUM(TotalMins) % 60 AS Mins, CAST((SUM(TotalMins) % 60) / 60.0 AS decimal(10, 2)) AS MinsNumber "
+                        . "SELECT StudentID, StudentName, SUM(TotalMins) / 60 AS Hrs, SUM(TotalMins) % 60 AS Mins, SUM(TotalMins), CAST((SUM(TotalMins) % 60) / 60.0 AS decimal(10, 2)) AS MinsNumber "
                         . "FROM #RESULT2 GROUP BY StudentID, StudentName";
     
     $qry_get_main = "SELECT rst.StudentID, rst.StudentName, rst.Hrs, rst.Mins, rst.MinsNumber "

@@ -28,6 +28,20 @@ function db_getTbl_Term_Master() {
     return result;
 }
 
+function db_getTbl_Term_MasterByID(Term_ID) {   
+    var result = new Array();
+    $.ajax({
+        type:"POST",
+        url:"php/db_getTbl_Term_MasterByID.php",
+        data:{Term_ID:Term_ID},
+        async: false,  
+        success:function(data) {
+            result = JSON.parse(data);
+        }
+    });
+    return result;
+}
+
 function db_getPositiveAttendanceGridTrak(StartDate, EndDate, LocationID, TermID) {   
     var result = new Array();
     $.ajax({
