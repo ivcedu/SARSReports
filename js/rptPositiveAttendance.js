@@ -304,8 +304,7 @@ function getLoginInfo() {
 function getSARSLocation() {
     $('#sel_location').empty();
     
-    var html = "<option value='47'>Language Lab</option>";
-    html += "<option value='37'>Math Lab</option>";
+    var html = "<option value='37'>Math Lab</option>";
     html += "<option value='44'>Student Success Center</option>";
     
     $('#sel_location').append(html);
