@@ -1,6 +1,4 @@
 var m_table;
-var target;
-var spinner;
 
 var ctx;
 var avg_wait_chart;
@@ -8,8 +6,6 @@ var avg_wait_chart;
 window.onload = function() {
     if (sessionStorage.key(0) !== null) {
         $('.splash').css('display', 'none');
-        target = $('#spinner')[0];
-        spinner = new Spinner();
         getLoginInfo();
         getSARSLocation();
     }
@@ -150,7 +146,7 @@ $(document).ready(function() {
     
     // run button click ////////////////////////////////////////////////////////
     $('#btn_run').click(function() { 
-        startSpin();
+        $('#spinner_attachment').show();
         
         var location_id = $('#sel_location').val();
         var start_date = $('#start_date').val();
@@ -163,8 +159,8 @@ $(document).ready(function() {
         else {
             setTimeout(function() { 
                 getDropInsCustomReport(start_date, end_date, location_id); 
-                stopSpin();
-            }, 100);
+                $('#spinner_attachment').hide();
+            }, 1000);
         }
     });
     
@@ -277,15 +273,6 @@ $.fn['animatePanel'] = function() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function startSpin() {
-    spinner.spin(target);
-}
-
-function stopSpin() {
-    spinner.stop();
-}
-
-////////////////////////////////////////////////////////////////////////////////
 function getLoginInfo() {
     var login_name = sessionStorage.getItem('ss_sarsr_loginName');
     $('#login_user').html(login_name);
