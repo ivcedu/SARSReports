@@ -84,6 +84,22 @@ function db_getZeroMinGridTrak(StartDate, EndDate, LocationID, TermID) {
     return result;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+function ireportDBgetUserAccess(Username) {   
+    var Result = "";
+    $.ajax({
+        type:"POST",
+        url:"php/ireport_db_getUserAccess.php",
+        data:{Username:Username},
+        async: false,  
+        success:function(data) {
+            Result = JSON.parse(data);
+        }
+    });
+    return Result;
+}
+
 //function db_getSurveyCourseCount(TermCode) {
 //    var result = "";
 //    $.ajax({

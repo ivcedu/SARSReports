@@ -35,18 +35,31 @@ window.onload = function() {
 ////////////////////////////////////////////////////////////////////////////////
 $(document).ready(function() {      
     $('#btn_login').click(function() { 
-        $('#error_msg').html("");
-        $('#logn_error').hide();
-
-        if(loginInfo()) {
-            sessionData_login(m_name, m_email);
-            window.open('main.html', '_self');
-            return false;
+        // ireport.ivc.edu validation //////////////////////////////////////////
+        if(location.href.indexOf("ireport.ivc.edu") >= 0 && !ireportValidation()) {
+            swal({  title: "Access Denied",
+                    text: "This is a Development site. It will redirect to IVC Application site",
+                    type: "error",
+                    confirmButtonText: "OK" },
+                    function() {
+                        sessionStorage.clear();
+                        window.open('https://services.ivc.edu/', '_self');
+                        return false;
+                    }
+            );
         }
+        ////////////////////////////////////////////////////////////////////////
         else {
-            $('#error_msg').html("Invalid username or password");
-            $('#logn_error').show();
-            return false;
+            if(loginInfo()) {
+                sessionData_login(m_name, m_email);
+                window.open('main.html', '_self');
+                return false;
+            }
+            else {
+                $('#error_msg').html("Invalid username or password");
+                $('#logn_error').show();
+                return false;
+            }
         }
     });
     
@@ -75,5 +88,16 @@ function loginInfo() {
         }
         
         return true;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function ireportValidation() {
+    var username = $('#username').val().toLowerCase().replace("@ivc.edu", "").replace("@saddleback.edu", "");
+    if (ireportDBgetUserAccess(username) !== null) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
