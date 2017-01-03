@@ -28,27 +28,27 @@
     
     $qry_insert_2 = "INSERT INTO #STUCOURSES "
                     . "SELECT crms.[Subject] + ' ' + crms.Course AS Course_Title, scms.Section_ID, scms.Section_Name, scms.[Description], stxr.Student_ID, stxr.Alt_ID AS Student_ID, stms.Full_Name "
-                    . "FROM #BUTTON AS butn INNER JOIN [SARS].[dbo].[Tbl_Button_Section_XRef] AS btsx ON butn.Button_ID = btsx.Button_ID "
-                    . "INNER JOIN [SARS].[dbo].[Tbl_Section_Master] AS scms ON btsx.Section_ID = scms.Section_ID "
-                    . "INNER JOIN [SARS].[dbo].[Tbl_Course_Master] AS crms ON scms.Course_ID = crms.Course_ID "
-                    . "INNER JOIN [SARS].[dbo].[Tbl_Student_Courses] AS stcr ON btsx.Section_ID = stcr.Section_ID "
-                    . "INNER JOIN [SARS].[dbo].[Tbl_Student_Master] AS stms ON stcr.Student_ID = stms.Student_ID "
-                    . "INNER JOIN [SARS].[dbo].[Tbl_Student_ID_XRef] AS stxr ON stms.Student_ID = stxr.Student_ID "
+                    . "FROM #BUTTON AS butn INNER JOIN [".$dbDatabase."].[dbo].[Tbl_Button_Section_XRef] AS btsx ON butn.Button_ID = btsx.Button_ID "
+                    . "INNER JOIN [".$dbDatabase."].[dbo].[Tbl_Section_Master] AS scms ON btsx.Section_ID = scms.Section_ID "
+                    . "INNER JOIN [".$dbDatabase."].[dbo].[Tbl_Course_Master] AS crms ON scms.Course_ID = crms.Course_ID "
+                    . "INNER JOIN [".$dbDatabase."].[dbo].[Tbl_Student_Courses] AS stcr ON btsx.Section_ID = stcr.Section_ID "
+                    . "INNER JOIN [".$dbDatabase."].[dbo].[Tbl_Student_Master] AS stms ON stcr.Student_ID = stms.Student_ID "
+                    . "INNER JOIN [".$dbDatabase."].[dbo].[Tbl_Student_ID_XRef] AS stxr ON stms.Student_ID = stxr.Student_ID "
                     . "WHERE stcr.Dropped = 0 AND crms.[Subject] + ' ' + crms.Course = 'TU 301' "
                     . "AND scms.Term_ID = '".$TermID."'";   
     
     $qry_insert_3 = "INSERT INTO #RESULT "
                         . "SELECT sxf.Alt_ID, stu.Full_Name, '0', gdc.Duration, 'GRID', 0 "
-                        . "FROM [SARS].[dbo].[Tbl_Student_History] AS sht LEFT JOIN [SARS].[dbo].[Tbl_Grid_Current] AS gdc ON sht.Sched_ID = gdc.Sched_ID "
-                        . "LEFT JOIN [SARS].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = sht.Student_ID "
-                        . "LEFT JOIN [SARS].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
+                        . "FROM [".$dbDatabase."].[dbo].[Tbl_Student_History] AS sht LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Grid_Current] AS gdc ON sht.Sched_ID = gdc.Sched_ID "
+                        . "LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = sht.Student_ID "
+                        . "LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
                         . "WHERE gdc.Sched_Date BETWEEN '".$StartDate."' AND '".$EndDate."' AND sht.Attend_Flag = 'Y' AND gdc.Location_ID = '".$LocationID."'";    
     
     $qry_insert_4 = "INSERT INTO #RESULT "
                         . "SELECT sxf.Alt_ID, stu.Full_Name, DATEDIFF(SECOND, sht.Start_Time, sht.Stop_Time) / 3600, CAST(ROUND((DATEDIFF(SECOND, sht.Start_Time, sht.Stop_Time) % 3600) / 60.0, 0) AS int), 'TRAK', aprs.Section_ID "
-                        . "FROM [SARS].[dbo].[Tbl_Student_History] AS sht LEFT JOIN [SARS].[dbo].[Tbl_Appt_Reasons] AS aprs ON sht.History_ID = aprs.History_ID "
-                        . "LEFT JOIN [SARS].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sht.Student_ID = sxf.Student_ID "
-                        . "LEFT JOIN [SARS].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = sxf.Student_ID "
+                        . "FROM [".$dbDatabase."].[dbo].[Tbl_Student_History] AS sht LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Appt_Reasons] AS aprs ON sht.History_ID = aprs.History_ID "
+                        . "LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sht.Student_ID = sxf.Student_ID "
+                        . "LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = sxf.Student_ID "
                         . "WHERE sht.Sched_Date BETWEEN '".$StartDate."' AND '".$EndDate."' AND sht.[User_Name] = 'SARS·TRAK' AND sht.Trak_CheckIN = 0 AND sht.Location_ID = '".$LocationID."'";
     
     $qry_insert_5 = "INSERT INTO #RESULT2 "

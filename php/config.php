@@ -1,5 +1,7 @@
 <?php
-    $dbHost = "ivcintdb1";
+//    $dbHost = "ivcintdb1";
+    // sql 2014 server
+    $dbHost = "IEXDBLISTNR";
     $dbDatabase = "SARS";
     $dbUser = "ivcsars";
     $dbPass = "~7QM#pd?X*";

@@ -27,24 +27,24 @@
     $qry_drop_table_deleted2 = "DROP TABLE #DELETED2";
     
     $qry_get_dropin = "INSERT INTO #DROPIN SELECT MONTH(wkn.Sched_Date), YEAR(wkn.Sched_Date), 'Drop-Ins Seen', DATEDIFF(MINUTE, wkn.Arrival_Time, wkn.Serviced_Time) "
-                        ."FROM [SARS].[dbo].[Tbl_WalkIns] AS wkn LEFT JOIN [SARS].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = wkn.Student_ID "
-                        ."LEFT JOIN [SARS].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
+                        ."FROM [".$dbDatabase."].[dbo].[Tbl_WalkIns] AS wkn LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = wkn.Student_ID "
+                        ."LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
                         ."WHERE wkn.Sched_Date BETWEEN '".$StartDate."' AND '".$EndDate."' AND wkn.Walkin_Status = 'Serviced'".$str_location_id."";
     $qry_get_dropin2 = "INSERT INTO #DROPIN2 SELECT Sch_Month, Sch_Year, WkStatus, SUM(Waiting) / COUNT(*), COUNT(*) FROM #DROPIN "
                         ."GROUP BY Sch_Month, Sch_Year, WkStatus";
     
     $qry_get_notseen = "INSERT INTO #NOTSEEN SELECT MONTH(wkn.Sched_Date), YEAR(wkn.Sched_Date), 'Drop-Ins Not Seen', "
                         ."CASE WHEN DATEDIFF(MINUTE, wkn.Arrival_Time, wkn.Serviced_Time) IS NULL THEN '0' ELSE DATEDIFF(MINUTE, wkn.Arrival_Time, wkn.Serviced_Time) END "
-                        ."FROM [SARS].[dbo].[Tbl_WalkIns] AS wkn LEFT JOIN [SARS].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = wkn.Student_ID "
-                        ."LEFT JOIN [SARS].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
+                        ."FROM [".$dbDatabase."].[dbo].[Tbl_WalkIns] AS wkn LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = wkn.Student_ID "
+                        ."LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
                         ."WHERE wkn.Sched_Date BETWEEN '".$StartDate."' AND '".$EndDate."' AND wkn.History_ID = 0".$str_location_id."";
     $qry_get_notseen2 = "INSERT INTO #NOTSEEN2 "
                         ."SELECT Sch_Month, Sch_Year, WkStatus, SUM(Waiting) / COUNT(*), COUNT(*) FROM #NOTSEEN "
                         ."GROUP BY Sch_Month, Sch_Year, WkStatus";
     
     $qry_get_deleted = "INSERT INTO #DELETED SELECT MONTH(wkn.Sched_Date), YEAR(wkn.Sched_Date), 'Deleted (No Shows)' "
-                        ."FROM [SARS].[dbo].[Tbl_WalkIns] AS wkn LEFT JOIN [SARS].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = wkn.Student_ID "
-                        ."LEFT JOIN [SARS].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
+                        ."FROM [".$dbDatabase."].[dbo].[Tbl_WalkIns] AS wkn LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_Master] AS stu ON stu.Student_ID = wkn.Student_ID "
+                        ."LEFT JOIN [".$dbDatabase."].[dbo].[Tbl_Student_ID_XRef] AS sxf ON sxf.Student_ID = stu.Student_ID "
                         ."WHERE wkn.Sched_Date BETWEEN '".$StartDate."' AND '".$EndDate."' AND wkn.Walkin_Status = 'Deleted'".$str_location_id."";
     $qry_get_deleted2 = "INSERT INTO #DELETED2 SELECT Sch_Month, Sch_Year, WkStatus, COUNT(*) FROM #DELETED "
                         ."GROUP BY Sch_Month, Sch_Year, WkStatus";
