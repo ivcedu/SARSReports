@@ -210,10 +210,6 @@ $(document).ready(function() {
     
     // bootstrap selectpicker
     $('.selectpicker').selectpicker();
-    
-    // bootstrap datepicker
-//    $('#start_date').datepicker();
-//    $('#end_date').datepicker();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
@@ -316,24 +312,31 @@ function getSARSTerms() {
     var result = new Array(); 
     result = db_getTbl_Term_Master();
     
+    var str_active_start_date = "";
+    var str_active_stop_date = "";
+    var str_term_value = "";
     $('#sel_semester').empty();
     var html = "";
     for (var i = 0; i < result.length; i++) {
         html += "<option value='" + convertDBDateToString(result[i]['Start_Date']) + "_" + convertDBDateToString(result[i]['Stop_Date']) + "_" + result[i]['Term_ID'] + "'>" + result[i]['Description'] + "</option>";
+        if (result[i]['Active'] === "1") {
+            term_id = result[i]['Term_ID'];
+            str_active_start_date = convertDBDateToString(result[i]['Start_Date']);
+            str_active_stop_date = convertDBDateToString(result[i]['Stop_Date']);
+            str_term_value = str_active_start_date + "_" + str_active_stop_date + "_" + term_id;
+        }
     }
     
-    $('#start_date').html(convertDBDateToString(result[0]['Start_Date']));
-    $('#end_date').html(convertDBDateToString(result[0]['Stop_Date']));
-    term_id = result[0]['Term_ID'];
+    $('#start_date').html(str_active_start_date);
+    $('#end_date').html(str_active_stop_date);
     
     $('#sel_semester').append(html);
+    $('#sel_semester').val(str_term_value);
     $('#sel_semester').selectpicker('refresh');
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function getPositiveAttendanceList(start_date, end_date, sars_location, term_id) {
-//    var tmp = getTardisTermCode("21");
-    
+function getPositiveAttendanceList(start_date, end_date, sars_location, term_id) {    
     var result = new Array(); 
     result = db_getPositiveAttendanceGridTrak(start_date, end_date, sars_location, term_id);
 
