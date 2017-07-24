@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Password</label>
-                                    <input type="password" class="form-control" id="password">
+                                    <input type="password" class="form-control" autocomplete="off" id="password">
                                     <span class="help-block small">Your network password</span>
                                 </div>
                                 <button class="btn btn-success btn-block" id="btn_login">Login</button>
