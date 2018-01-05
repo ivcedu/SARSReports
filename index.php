@@ -15,17 +15,17 @@
         <link rel="stylesheet" href="../homer-1.9/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"/>
         <link rel="stylesheet" href="../homer-1.9/fonts/pe-icon-7-stroke/css/helper.css"/>
         <link rel="stylesheet" href="../homer-1.9/styles/style.css"/>
-        <link rel="stylesheet" href="../homer-1.9/styles/static_custom.css">
         <!-- include css -->
         <link rel="stylesheet" href="../include/sweetalert/css/sweetalert.css"/>
         <!-- application css -->
     </head>
+    
     <body>
         <div class="login-container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center m-b-md">
-                        <h3 class="font-bold">SARS Reports</h3>
+                        <h3 style="color: white;">SARS Reports</h3>
                     </div>
                     <div class="hpanel">
                         <div class="panel-body">
@@ -49,8 +49,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
+        </div>  
         <!-- homer-1.9 Vendor javascript -->
         <script src="../homer-1.9/vendor/jquery/dist/jquery.min.js"></script>
         <script src="../homer-1.9/vendor/jquery-ui/jquery-ui.min.js"></script>
